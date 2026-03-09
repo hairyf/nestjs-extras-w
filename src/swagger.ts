@@ -3,7 +3,7 @@ import type { SwaggerCustomOptions } from '@nestjs/swagger'
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
 import { context } from './internal'
 
-export function withSwagger(
+export function withNestjsSwagger(
   app: INestApplication,
   setup?: (config: DocumentBuilder) => DocumentBuilder,
   options?: SwaggerCustomOptions,
