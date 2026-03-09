@@ -63,11 +63,11 @@ export async function startNestjsListen(
     )
   }
 
-  logger.log(`${styleText('bold', 'Listening on:')} ${styleText('gray', context.app.url)}`)
+  logger.log(`${styleText('bold', 'Listening on:')}${context.swagger?.builder ? '  ' : ' '}${styleText('gray', context.app.url)}`)
   if (context.swagger.builder) {
     logger.log(`${styleText('bold', 'Swaggier JSON:')} ${styleText('gray', `${context.app.url}/swagger/json`)}`)
     logger.log(`${styleText('bold', 'Swaggier URL:')} ${styleText('gray', `${context.app.url}/swagger/website`)}`)
   }
   if (process.env.NODE_ENV)
-    logger.log(`${styleText('bold', 'Environments:')} ${styleText('gray', process.env.NODE_ENV)}`)
+    logger.log(`${styleText('bold', 'Environments:')}${context.swagger?.builder ? '  ' : ' '}${styleText('gray', process.env.NODE_ENV)}`)
 }
