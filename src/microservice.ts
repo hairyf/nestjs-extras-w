@@ -5,20 +5,23 @@ import { Transport } from '@nestjs/microservices'
 import { context } from './internal'
 import { parseWithEnvExpand } from './utils'
 
-export async function withNestjsMicroservice(app: INestApplication, service?: { microservice?: MicroserviceOptions }) {
-  if (!service || !service.microservice)
+export interface EMicroserviceOptions {
+  transport: string
+  options: Record<string, string>
+}
+
+export async function withNestjsMicroservice(app: INestApplication, microserviceOptions?: EMicroserviceOptions) {
+  if (!microserviceOptions)
     return
 
-  const options = merge(service.microservice, {
-    // @ts-expect-error - Transport is not a valid property of MicroserviceOptions
-    transport: Transport[service.microservice.transport] || service.microservice.transport,
-    // @ts-expect-error - options is not a valid property of MicroserviceOptions
-    options: parseWithEnvExpand(service.microservice.options),
+  const options = merge(microserviceOptions, {
+    transport: Transport[microserviceOptions.transport as keyof typeof Transport] || microserviceOptions.transport,
+    options: parseWithEnvExpand(microserviceOptions.options),
   })
 
   const microservice = app.connectMicroservice(options)
 
   context.microservice.instance = microservice
-  context.microservice.options = options
+  context.microservice.options = options as unknown as MicroserviceOptions
   await app.startAllMicroservices()
 }

@@ -9,6 +9,7 @@ import { context } from './internal'
 const logger = new Logger()
 
 export interface ListenOptions {
+  port?: string | number
   trying?: boolean
   onError?: (error: Error) => void
   onListening?: () => void
@@ -17,13 +18,16 @@ export interface ListenOptions {
 
 export async function withNestjsListen(
   app: INestApplication,
-  service: { port?: number } = {},
-  options: ListenOptions = {},
+  service: ListenOptions = {},
 ) {
-  const port = service.port || process.env.SERVER_PORT || 3000
+  const {
+    port = process.env.SERVER_PORT || 3000,
+    trying = true,
+    onError,
+    onListening,
+    onSignal,
+  } = service
   const [error] = await to(app.listen(port))
-  const { trying = true, onError, onListening, onSignal } = options
-
   if (error) {
     onError?.(error)
     if (trying) {
