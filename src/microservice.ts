@@ -10,7 +10,7 @@ export interface EMicroserviceOptions {
   options: Record<string, string>
 }
 
-export async function withNestjsMicroservice(app: INestApplication, microserviceOptions?: EMicroserviceOptions) {
+export async function startNestjsMicroservice(app: INestApplication, microserviceOptions?: EMicroserviceOptions) {
   if (!microserviceOptions)
     return
 

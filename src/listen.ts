@@ -16,7 +16,7 @@ export interface ListenOptions {
   onSignal?: () => void
 }
 
-export async function withNestjsListen(
+export async function startNestjsListen(
   app: INestApplication,
   service: ListenOptions = {},
 ) {
@@ -33,7 +33,7 @@ export async function withNestjsListen(
     if (trying) {
       logger.error(`Port ${port} is in use, trying ${+port + 1}...`)
       await delay(1000)
-      await withNestjsListen(app, { port: +port + 1 })
+      await startNestjsListen(app, { port: +port + 1 })
       return
     }
     else {
